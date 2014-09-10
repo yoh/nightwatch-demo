@@ -1,0 +1,3 @@
+deps/*
+tests/.logs
+tests/.reports

@@ -33,7 +33,7 @@ inflating: deps/chromedriver
 ```
 $ npm install -g nightwatch
 $ touch nightwatch.json
-$ mkdir tests tests/.reports tests/.logs tests/pages tests/commands tests/assertions tests/screenshots tests/screenshots/baseline tests/screenshots/diff tests/screenshots/results
+$ mkdir tests tests/.reports tests/.logs tests/pages tests/commands tests/assertions
 ```
 
 >  
