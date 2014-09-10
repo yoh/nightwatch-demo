@@ -193,3 +193,62 @@ $ nightwatch -e default,chrome
 
     OK. 4 total assertions passed. (6757 ms)
     ```
+
+- with reusable **Context (Page Object)**
+ - see [new Page feature](https://github.com/beatfactor/nightwatch/issues/242) on github for details
+ - create new page file
+    ```
+    $ touch tests/pages/homepage.js
+    ```
+ - copy/paste this code in ___tests/pages/homepage.js___
+    ```js
+    module.exports = function(browser) {
+      return {
+        go: function () {
+          return browser.urlWait('http://curvytron.elao.com', "form", 2000);
+        },
+        checkPage: function() {
+          return browser
+            .assert.title("Curvytron")
+            .assert.attributeEquals("form input[name='name']", 'placeholder', "Create room")
+          ;
+        },
+        createRoom: function(name) {
+          return browser
+            .setValue("form input[name='name']", name)
+            .submitForm("form")
+          ;
+        }
+      };
+    };
+
+    ```
+ - use this page in ___tests/basic.js___
+    ```
+    module.exports = {
+      "Homepage": function(browser) {
+        browser
+          .page.homepage().go()
+          .page.homepage().checkPage()
+          .page.homepage().createRoom('nightwatch room')
+          .end()
+        ;
+      }
+    };
+
+    ```
+ - run test
+    ```
+    $ nightwatch -t tests/basic.js
+    Starting selenium server... started - PID:  39303
+
+    [Basic] Test Suite
+    ==================
+
+    Running:  Homepage
+
+    ✔  Element <form> was present after 1761 milliseconds.
+    ✔  Testing if the page title equals "Curvytron".
+    ✔  Testing if attribute placeholder of <form input[name='name']> equals "Create room".
+
+    ```
