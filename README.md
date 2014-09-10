@@ -151,6 +151,7 @@ $ nightwatch -e default,chrome
     ```
     $ touch tests/commands/urlWait.js
     ```
+    
  - copy/paste this code in ___tests/commands/urlWait.js___
     ```js
     exports.command = function(url, cssSelector, timeout) {
@@ -200,6 +201,7 @@ $ nightwatch -e default,chrome
     ```
     $ touch tests/pages/homepage.js
     ```
+    
  - copy/paste this code in ___tests/pages/homepage.js___
     ```js
     module.exports = function(browser) {
