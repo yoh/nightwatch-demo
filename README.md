@@ -141,3 +141,55 @@ $ nightwatch -e chrome
 ## run tests on firefox (default) and chrome
 $ nightwatch -e default,chrome
 ```
+
+>  
+
+# Write reusable tests
+- with reusable **Custom Commands**
+ - see [nightwatch documentation](http://nightwatchjs.org/guide#extending)
+ - create new command file
+    ```
+    $ touch tests/commands/urlWait.js
+    ```
+ - copy/paste this code in ___tests/commands/urlWait.js___
+    ```js
+    exports.command = function(url, cssSelector, timeout) {
+      return this
+        .url(url)
+        .waitForElementPresent(cssSelector, timeout)
+      ;
+    };
+
+    ```
+ - use this custom command in ___tests/basic.js___
+    ```
+    module.exports = {
+      "I am a basic test": function(browser) {
+        browser
+          .urlWait("http://curvytron.elao.com", "form", 2000)
+          .assert.title('Curvytron')
+          .assert.attributeEquals("form input[name='name']", "placeholder", "Create room")
+          .assert.containsText('footer a[href="/#/about"]', "About Us", "About us link is ok")
+          .end()
+        ;
+      }
+    };
+
+    ```
+ - run test
+    ```
+    $ nightwatch -t tests/basic.js
+    Starting selenium server... started - PID:  79899
+
+    [Basic] Test Suite
+    ==================
+
+    Running:  I am a basic test
+
+    ✔  Element <form> was present after 1639 milliseconds.
+    ✔  Testing if the page title equals "Curvytron".
+    ✔  Testing if attribute placeholder of <form input[name='name']> equals "Create room".
+    ✔  About us link is ok
+
+    OK. 4 total assertions passed. (6757 ms)
+    ```
